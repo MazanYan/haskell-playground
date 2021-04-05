@@ -111,3 +111,11 @@ myAll :: (a -> Bool) -> [a] -> Bool
 myAll f = foldr all' True
     where all' x True = f x
           all' _ False = False
+
+mapEither :: (a -> Either b c) -> [a] -> Either b [c]
+mapEither f (x:xs) = case mapEither f xs of 
+    Left error -> Left error
+    Right ys   -> case f x of
+                        Left error -> Left error
+                        Right y    -> Right (y:ys)
+mapEither _ [] = Right []
